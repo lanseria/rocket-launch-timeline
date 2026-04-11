@@ -1,0 +1,164 @@
+{
+  "project": "rocket-launch-timeline",
+  "last_updated": "2026-04-11",
+  "rules": {
+    "single_active_feature": true,
+    "passing_requires_evidence": true,
+    "do_not_skip_verification": true
+  },
+  "status_legend": {
+    "not_started": "功能还没开始做。",
+    "in_progress": "这个功能是当前唯一正在进行的任务。",
+    "blocked": "因为已记录的阻塞问题，当前无法继续推进。",
+    "passing": "要求的验证已经通过，并且证据已经记录。"
+  },
+  "features": [
+    {
+      "id": "core-001",
+      "priority": 1,
+      "area": "core",
+      "title": "V4 圆形时间轴渲染",
+      "user_visible_behavior": "展示页面显示 SpaceX V4 风格的圆形时间轴，事件节点随时间移动。",
+      "status": "passing",
+      "verification": [
+        "启动项目 pnpm dev",
+        "访问 /",
+        "确认圆形时间轴 SVG 正确渲染",
+        "确认事件节点显示在弧线上"
+      ],
+      "evidence": ["项目启动成功，两个页面均正常响应"],
+      "notes": "从 spacex-launch-timeline 提取的 V4 时间轴组件"
+    },
+    {
+      "id": "core-002",
+      "priority": 2,
+      "area": "core",
+      "title": "T 计时器和任务名称显示",
+      "user_visible_behavior": "展示页面底部显示 T 计时器（T-00:05:00），顶部显示任务名称。",
+      "status": "passing",
+      "verification": [
+        "访问 /",
+        "确认底部中央显示 T 计时器",
+        "确认 T 符号和数字正确"
+      ],
+      "evidence": ["页面 HTML 结构包含计时器和任务名称容器"],
+      "notes": ""
+    },
+    {
+      "id": "core-003",
+      "priority": 3,
+      "area": "core",
+      "title": "控制面板页面",
+      "user_visible_behavior": "访问 /control 看到配置面板：任务名、运载器、主题选择、事件管理、计时器控制、背景配置。",
+      "status": "passing",
+      "verification": [
+        "访问 /control",
+        "确认所有控制面板组件显示",
+        "确认快捷键可用（Space/R/I）"
+      ],
+      "evidence": ["/control 页面正常响应"],
+      "notes": ""
+    },
+    {
+      "id": "core-004",
+      "priority": 4,
+      "area": "core",
+      "title": "事件管理",
+      "user_visible_behavior": "在控制面板点击'管理事件节点'后，可添加/删除/编辑事件的时间戳、名称和可见性。",
+      "status": "not_started",
+      "verification": [
+        "点击管理事件节点按钮",
+        "添加一个新事件",
+        "修改事件名称和时间",
+        "删除一个事件",
+        "确认时间轴更新"
+      ],
+      "evidence": [],
+      "notes": "EventsModal 组件已创建，需要浏览器端测试"
+    },
+    {
+      "id": "core-005",
+      "priority": 5,
+      "area": "core",
+      "title": "计时器控制",
+      "user_visible_behavior": "在控制面板可以开始/暂停/重置/跳转倒计时，展示页面实时更新。",
+      "status": "not_started",
+      "verification": [
+        "点击开始倒计时",
+        "确认计时器开始运行",
+        "点击暂停",
+        "点击重置",
+        "输入秒数跳转"
+      ],
+      "evidence": [],
+      "notes": "Controls 组件已创建，需要浏览器端测试"
+    },
+    {
+      "id": "core-006",
+      "priority": 6,
+      "area": "core",
+      "title": "背景图/OBS透明背景",
+      "user_visible_behavior": "可以选择本地图片作为背景，切换到OBS透明模式，还原默认背景。",
+      "status": "not_started",
+      "verification": [
+        "选择本地图片",
+        "确认背景更新",
+        "点击OBS直播",
+        "确认背景透明",
+        "还原背景"
+      ],
+      "evidence": [],
+      "notes": "BackgroundConfig 组件已创建"
+    },
+    {
+      "id": "core-007",
+      "priority": 7,
+      "area": "core",
+      "title": "WebSocket 远程同步",
+      "user_visible_behavior": "控制面板的修改通过 WebSocket 实时同步到展示页面。",
+      "status": "not_started",
+      "verification": [
+        "开两个浏览器窗口",
+        "一个打开 /control，一个打开 /",
+        "在控制面板修改事件",
+        "确认展示页面同步更新",
+        "启动计时器确认同步"
+      ],
+      "evidence": [],
+      "notes": "server/ws.ts 和 useWebSocket.ts 已创建，需要集成测试"
+    },
+    {
+      "id": "core-008",
+      "priority": 8,
+      "area": "core",
+      "title": "配置导入导出",
+      "user_visible_behavior": "可以导出当前配置为 JSON 文件，导入 JSON 文件恢复配置。",
+      "status": "not_started",
+      "verification": [
+        "点击导出配置",
+        "确认 JSON 文件下载",
+        "修改一些配置",
+        "导入之前导出的文件",
+        "确认配置恢复"
+      ],
+      "evidence": [],
+      "notes": "store 中的 exportConfig/importConfig 已实现"
+    },
+    {
+      "id": "deploy-001",
+      "priority": 9,
+      "area": "deploy",
+      "title": "Docker Compose 部署",
+      "user_visible_behavior": "通过 docker compose up --build 可以一键部署项目。",
+      "status": "not_started",
+      "verification": [
+        "运行 docker compose up --build",
+        "确认容器启动成功",
+        "访问 http://localhost:3000",
+        "确认页面正常显示"
+      ],
+      "evidence": [],
+      "notes": "Dockerfile 和 docker-compose.yml 已创建"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+/* assets/css/main.css */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  --at-apply: 'font-sans';
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus {
+  color: #0070f3;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Nuxt
+.nuxt
+.output
+.data
+
+# Generated fonts (UnoCSS presetWebFonts downloads at build time)
+public/assets/fonts/
+
+# Env
+.env
+.env.*
+
+# IDE
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
