@@ -5,7 +5,7 @@
 - 仓库根目录：C:\Users\zhang\Documents\Code\rocket-launch-timeline
 - 标准启动路径：`pnpm dev` → http://localhost:3000
 - 标准验证路径：访问 `/` 看到时间轴，访问 `/control` 看到控制面板
-- 当前最高优先级未完成功能：core-004（事件管理，需浏览器测试）
+- 当前最高优先级未完成功能：core-005（计时器控制）
 - 当前 blocker：无
 
 ## 会话记录
@@ -40,6 +40,33 @@
   - 主题选择 UI 使用了动态 grid-cols class，可能需要 UnoCSS safelist
   - Dockerfile 尚未实际构建测试
 - 下一步最佳动作：
-  - 在浏览器中打开项目进行完整 UI 验证
-  - 将 WebSocket 集成到页面中（index.vue 和 control.vue）
-  - 测试事件管理和计时器控制功能
+  - core-005: 计时器控制（开始/暂停/重置/跳转）浏览器测试
+  - core-006: 背景图/OBS透明模式测试
+  - core-007: WebSocket 远程同步集成测试
+
+### Session 002
+
+- 日期：2026-04-13
+- 本轮目标：完成 core-004 事件管理功能
+- 已完成：
+  - 重构 EventsModal 数据流：从 computed writable + v-model on array index 改为本地 ref 维护编辑状态
+  - 简化 control.vue：移除冗余的 handleAddNode/handleDeleteNode 函数，事件操作完全在 modal 内完成
+  - Playwright 浏览器端验证全部通过：
+    - 打开弹窗：12个事件正确显示
+    - 添加事件：12→13，新增事件可编辑
+    - 编辑事件：时间戳和名称修改正确
+    - 删除事件：13→12
+    - 关闭弹窗：事件持久化到 store
+    - 重置默认值：恢复12个事件
+  - 截图验证：控制面板、弹窗UI、编辑后状态均正常
+- 运行过的验证：
+  - pnpm dev 启动成功，两个页面返回 200
+  - Playwright 自动化测试全部通过
+  - nuxi typecheck 报告的错误均为预存问题（server/ws.ts、nuxt.config.ts），与本次修改无关
+- 更新过的文件：
+  - app/components/modal/EventsModal.vue（重构数据流）
+  - app/pages/control.vue（简化事件处理）
+  - feature_list.json（core-004 状态→passing）
+  - claude-progress.md（进度更新）
+- 提交记录：待提交
+- 下一步最佳动作：core-005 计时器控制

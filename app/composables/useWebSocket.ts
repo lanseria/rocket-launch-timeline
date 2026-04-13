@@ -1,10 +1,6 @@
-import { useThrottleFn } from '@vueuse/core'
+import { useThrottleFn, useWebSocket } from '@vueuse/core'
 
 export function useTimelineWebSocket() {
-  const isConnected = ref(false)
-  let ws: WebSocket | null = null
-  let reconnectTimer: ReturnType<typeof setTimeout> | null = null
-
   const stateCallbacks: Array<(data: StateSnapshot) => void> = []
   const clockCallbacks: Array<(data: ClockSyncPayload) => void> = []
 
@@ -13,81 +9,47 @@ export function useTimelineWebSocket() {
     return `${protocol}//${window.location.host}/_ws`
   }
 
-  function connect() {
-    if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING))
-      return
-
-    try {
-      ws = new WebSocket(getWsUrl())
-
-      ws.onopen = () => {
-        isConnected.value = true
-      }
-
-      ws.onmessage = (event) => {
-        try {
-          const data: WSMessage = JSON.parse(event.data)
-
-          if (data.type === 'state-sync') {
-            for (const cb of stateCallbacks)
-              cb(data.payload)
-          }
-          else if (data.type === 'clock-sync') {
-            for (const cb of clockCallbacks)
-              cb(data.payload)
-          }
-        }
-        catch {
-          // 忽略非 JSON 消息
-        }
-      }
-
-      ws.onclose = () => {
-        isConnected.value = false
-        scheduleReconnect()
-      }
-
-      ws.onerror = () => {
-        isConnected.value = false
-      }
-    }
-    catch {
+  const { status, open, close, send } = useWebSocket(getWsUrl, {
+    autoConnect: false,
+    reconnect: {
+      retries: -1,
+      delay: 3000,
+    },
+    onConnected() {
+      isConnected.value = true
+    },
+    onDisconnected() {
       isConnected.value = false
-      scheduleReconnect()
-    }
-  }
+    },
+    onMessage(_ws, event) {
+      try {
+        const data: WSMessage = JSON.parse(event.data)
+        if (data.type === 'state-sync') {
+          for (const cb of stateCallbacks)
+            cb(data.payload)
+        }
+        else if (data.type === 'clock-sync') {
+          for (const cb of clockCallbacks)
+            cb(data.payload)
+        }
+      }
+      catch {
+        // 忽略非 JSON 消息
+      }
+    },
+  })
 
-  function scheduleReconnect() {
-    if (reconnectTimer)
-      return
-    reconnectTimer = setTimeout(() => {
-      reconnectTimer = null
-      connect()
-    }, 3000)
-  }
-
-  function disconnect() {
-    if (reconnectTimer) {
-      clearTimeout(reconnectTimer)
-      reconnectTimer = null
-    }
-    if (ws) {
-      ws.onclose = null
-      ws.close()
-      ws = null
-    }
-    isConnected.value = false
-  }
+  const isConnected = ref(false)
 
   const sendStateSync = useThrottleFn((snapshot: StateSnapshot) => {
-    if (ws?.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: 'state-sync', payload: snapshot }))
+    if (status.value === 'OPEN') {
+      send(JSON.stringify({ type: 'state-sync', payload: snapshot }))
     }
   }, 500)
 
   function sendClockSync(payload: ClockSyncPayload) {
-    if (ws?.readyState === WebSocket.OPEN) {
-      ws.send(JSON.stringify({ type: 'clock-sync', payload }))
+    if (status.value === 'OPEN') {
+      send(JSON.stringify({ type: 'clock-sync', payload }))
     }
   }
 
@@ -101,8 +63,8 @@ export function useTimelineWebSocket() {
 
   return {
     isConnected,
-    connect,
-    disconnect,
+    connect: open,
+    disconnect: close,
     sendStateSync,
     sendClockSync,
     onStateReceived,

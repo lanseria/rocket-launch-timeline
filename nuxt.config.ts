@@ -34,7 +34,11 @@ export default defineNuxtConfig({
     payloadExtraction: false,
     renderJsonPayloads: true,
     typedPages: true,
-    websocket: true,
+  },
+  nitro: {
+    experimental: {
+      websocket: true,
+    },
   },
   compatibilityDate: '2025-11-01',
   vite: {

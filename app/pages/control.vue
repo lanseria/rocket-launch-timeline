@@ -6,15 +6,41 @@ const { timestamps, nodeNames, nodeVisibilities } = storeToRefs(timelineStore)
 
 const showEventsModal = ref(false)
 
-function handleAddNode() {
-  timelineStore.addNode()
-}
+// WebSocket: 控制端发送同步
+const ws = useTimelineWebSocket()
 
-function handleDeleteNode(index: number) {
-  timelineStore.deleteNode(index)
-}
+onMounted(() => {
+  ws.connect()
+
+  // 监听 store 变化并发送状态同步
+  watch(
+    [
+      () => timelineStore.missionName,
+      () => timelineStore.vehicleName,
+      () => timelineStore.backgroundImageUrl,
+      () => timelineStore.activeThemeId,
+      () => timelineStore.timestamps,
+      () => timelineStore.nodeNames,
+      () => timelineStore.nodeVisibilities,
+    ],
+    () => {
+      ws.sendStateSync(timelineStore.getSnapshot())
+    },
+    { deep: true },
+  )
+
+  // 监听时钟同步包并发送
+  watch(
+    () => timelineStore.lastClockSyncPacket,
+    (packet) => {
+      if (packet)
+        ws.sendClockSync(packet)
+    },
+  )
+})
 
 onUnmounted(() => {
+  ws.disconnect()
   timelineStore.cleanup()
 })
 </script>
@@ -42,8 +68,6 @@ onUnmounted(() => {
       :node-names="nodeNames"
       :node-visibilities="nodeVisibilities"
       @close="showEventsModal = false"
-      @add-node="handleAddNode"
-      @delete-node="handleDeleteNode"
       @update:timestamps="timestamps = $event"
       @update:node-names="nodeNames = $event"
       @update:node-visibilities="nodeVisibilities = $event"

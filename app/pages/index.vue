@@ -10,7 +10,23 @@ const activeThemeComponent = computed(() => {
   return theme?.component ?? null
 })
 
+// WebSocket: 展示端接收同步
+const ws = useTimelineWebSocket()
+
+onMounted(() => {
+  ws.connect()
+
+  ws.onStateReceived((data) => {
+    timelineStore.syncFromRemote(data)
+  })
+
+  ws.onClockSyncReceived((data) => {
+    timelineStore.applyRemoteClockSync(data)
+  })
+})
+
 onUnmounted(() => {
+  ws.disconnect()
   timelineStore.cleanup()
 })
 </script>

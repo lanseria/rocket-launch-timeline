@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(pnpm install:*)",
+      "Bash(pnpm dev:*)",
+      "Bash(jobs -l)",
+      "Bash(kill %1)",
+      "Bash(find node_modules/nitro -name \"*.d.ts\" -exec grep -l \"websocket\\\\|defineWebSocket\" {} \\\\;)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Upgrade: websocket\" -H \"Connection: Upgrade\" http://localhost:3001/_ws)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\zhang\\Documents\\Code\\spacex-launch-timeline"
+    ]
+  }
+}

@@ -6,29 +6,49 @@ const props = defineProps<{
   nodeVisibilities: boolean[]
 }>()
 
-const emit = defineEmits([
-  'close',
-  'add-node',
-  'delete-node',
-  'update:timestamps',
-  'update:nodeNames',
-  'update:nodeVisibilities',
-])
+const emit = defineEmits<{
+  close: []
+  'update:timestamps': [value: number[]]
+  'update:nodeNames': [value: string[]]
+  'update:nodeVisibilities': [value: boolean[]]
+}>()
 
-const timestampsWritable = computed({
-  get: () => props.timestamps,
-  set: val => emit('update:timestamps', val),
+// 本地编辑状态
+const localTimestamps = ref<number[]>([])
+const localNodeNames = ref<string[]>([])
+const localNodeVisibilities = ref<boolean[]>([])
+
+// 打开时从 props 复制
+watch(() => props.show, (show) => {
+  if (show) {
+    localTimestamps.value = [...props.timestamps]
+    localNodeNames.value = [...props.nodeNames]
+    localNodeVisibilities.value = [...props.nodeVisibilities]
+  }
 })
 
-const nodeNamesWritable = computed({
-  get: () => props.nodeNames,
-  set: val => emit('update:nodeNames', val),
-})
+function handleAddNode() {
+  localTimestamps.value.push(0)
+  localNodeNames.value.push(`新事件 ${localNodeNames.value.length + 1}`)
+  localNodeVisibilities.value.push(true)
+}
 
-const nodeVisibilitiesWritable = computed({
-  get: () => props.nodeVisibilities,
-  set: val => emit('update:nodeVisibilities', val),
-})
+function handleDeleteNode(index: number) {
+  if (localTimestamps.value.length <= 1) {
+    console.warn('至少需要保留一个事件节点。')
+    return
+  }
+  localTimestamps.value.splice(index, 1)
+  localNodeNames.value.splice(index, 1)
+  localNodeVisibilities.value.splice(index, 1)
+}
+
+function handleClose() {
+  emit('update:timestamps', localTimestamps.value)
+  emit('update:nodeNames', localNodeNames.value)
+  emit('update:nodeVisibilities', localNodeVisibilities.value)
+  emit('close')
+}
 </script>
 
 <template>
@@ -39,22 +59,22 @@ const nodeVisibilitiesWritable = computed({
           管理事件节点 (单位: 秒)
         </h2>
         <div class="node_list_scrollbar pr-2 max-h-[40vh] overflow-y-auto">
-          <div v-for="(timestamp, i) in timestampsWritable" :key="i" class="mb-2 flex gap-3 items-center">
+          <div v-for="(timestamp, i) in localTimestamps" :key="i" class="mb-2 flex gap-3 items-center">
             <label :for="`visible-switch-${i}`" class="inline-flex flex-shrink-0 cursor-pointer items-center relative">
-              <input :id="`visible-switch-${i}`" v-model="nodeVisibilitiesWritable[i]" type="checkbox" class="peer sr-only">
+              <input :id="`visible-switch-${i}`" v-model="localNodeVisibilities[i]" type="checkbox" class="peer sr-only">
               <div class="rounded-full bg-gray-600 h-6 w-11 peer-focus:outline-none after:border after:border-gray-300 after:rounded-full after:bg-white peer-checked:bg-green-600 after:h-5 after:w-5 after:content-[''] after:transition-all after:start-[2px] after:top-[2px] after:absolute peer-checked:after:translate-x-full" />
             </label>
-            <input v-model.number="timestampsWritable[i]" type="number" placeholder="例如: -60" class="input-field flex-shrink w-80px" :aria-label="`事件 ${i + 1} 的时间戳 (秒)`">
-            <input v-model="nodeNamesWritable[i]" type="text" placeholder="事件名称" class="input-field flex-grow w-full" :aria-label="`事件 ${i + 1} 的名称`">
-            <button class="btn-action bg-red-500 flex-shrink-0 hover:bg-red-600" :disabled="timestamps.length <= 1" aria-label="删除事件" @click="emit('delete-node', i)">
+            <input v-model.number="localTimestamps[i]" type="number" placeholder="例如: -60" class="input-field flex-shrink w-80px" :aria-label="`事件 ${i + 1} 的时间戳 (秒)`">
+            <input v-model="localNodeNames[i]" type="text" placeholder="事件名称" class="input-field flex-grow w-full" :aria-label="`事件 ${i + 1} 的名称`">
+            <button class="btn-action bg-red-500 flex-shrink-0 hover:bg-red-600" :disabled="localTimestamps.length <= 1" aria-label="删除事件" @click="handleDeleteNode(i)">
               -
             </button>
           </div>
         </div>
-        <button class="btn-action mt-4 bg-green-500 w-full hover:bg-green-600" aria-label="添加新事件" @click="emit('add-node')">
+        <button class="btn-action mt-4 bg-green-500 w-full hover:bg-green-600" aria-label="添加新事件" @click="handleAddNode">
           + 添加事件
         </button>
-        <button type="button" class="btn-action mt-4 bg-gray-600 w-full hover:bg-gray-700" @click="emit('close')">
+        <button type="button" class="btn-action mt-4 bg-gray-600 w-full hover:bg-gray-700" @click="handleClose">
           关闭
         </button>
       </div>

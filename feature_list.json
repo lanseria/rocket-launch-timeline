@@ -65,7 +65,7 @@
       "area": "core",
       "title": "事件管理",
       "user_visible_behavior": "在控制面板点击'管理事件节点'后，可添加/删除/编辑事件的时间戳、名称和可见性。",
-      "status": "not_started",
+      "status": "passing",
       "verification": [
         "点击管理事件节点按钮",
         "添加一个新事件",
@@ -73,8 +73,12 @@
         "删除一个事件",
         "确认时间轴更新"
       ],
-      "evidence": [],
-      "notes": "EventsModal 组件已创建，需要浏览器端测试"
+      "evidence": [
+        "Playwright 测试通过：打开弹窗、添加事件(12→13)、编辑时间戳(-999)和名称(TEST_EVENT)、删除事件(13→12)、关闭弹窗后事件持久化到 store",
+        "截图确认弹窗显示正常：每个事件有可见性开关、时间戳输入、名称输入、删除按钮",
+        "重置为默认值验证通过：事件数恢复为12"
+      ],
+      "notes": "重构了 EventsModal 数据流：使用本地 ref 维护编辑状态，关闭时同步回 store"
     },
     {
       "id": "core-005",
@@ -82,7 +86,7 @@
       "area": "core",
       "title": "计时器控制",
       "user_visible_behavior": "在控制面板可以开始/暂停/重置/跳转倒计时，展示页面实时更新。",
-      "status": "not_started",
+      "status": "passing",
       "verification": [
         "点击开始倒计时",
         "确认计时器开始运行",
@@ -90,8 +94,13 @@
         "点击重置",
         "输入秒数跳转"
       ],
-      "evidence": [],
-      "notes": "Controls 组件已创建，需要浏览器端测试"
+      "evidence": [
+        "Playwright 测试通过：开始→暂停(时间不变)→继续→跳转(-30秒)→重置",
+        "展示页面 T 计时器实时更新",
+        "快捷键 Space/R 功能正常",
+        "按钮状态正确切换：开始倒计时→暂停→继续"
+      ],
+      "notes": ""
     },
     {
       "id": "core-006",
@@ -99,7 +108,7 @@
       "area": "core",
       "title": "背景图/OBS透明背景",
       "user_visible_behavior": "可以选择本地图片作为背景，切换到OBS透明模式，还原默认背景。",
-      "status": "not_started",
+      "status": "passing",
       "verification": [
         "选择本地图片",
         "确认背景更新",
@@ -107,8 +116,12 @@
         "确认背景透明",
         "还原背景"
       ],
-      "evidence": [],
-      "notes": "BackgroundConfig 组件已创建"
+      "evidence": [
+        "Playwright 测试通过：OBS按钮清空背景URL、还原按钮恢复默认、文件上传设置blob URL",
+        "展示页 Adapter 正确渲染：默认背景图、OBS透明模式(rgba(0,0,0,0))、还原背景图",
+        "OBS在自定义背景后也能正确清空"
+      ],
+      "notes": "跨页面实时同步需要 WebSocket（core-007），当前通过 sessionStorage 验证"
     },
     {
       "id": "core-007",
