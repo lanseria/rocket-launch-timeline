@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { getTheme } from '~/themes'
 
 const timelineStore = useTimelineStore()
-const { missionName, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId } = storeToRefs(timelineStore)
+const { missionName, vehicleName, showVehicleName, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId } = storeToRefs(timelineStore)
 
 const activeThemeComponent = computed(() => {
   const theme = getTheme(activeThemeId.value)
@@ -42,6 +42,9 @@ onUnmounted(() => {
       <div class="mx-auto my-4 text-center relative z-10">
         <p class="text-40px font-500 font-sans text-white">
           {{ missionName }}
+        </p>
+        <p v-if="showVehicleName" class="text-lg text-gray-300 font-sans mt-1">
+          {{ vehicleName }}
         </p>
       </div>
 

@@ -18,6 +18,7 @@
     "@nuxt/devtools": "catalog:build",
     "@nuxt/eslint": "catalog:build",
     "@pinia/nuxt": "catalog:build",
+    "@playwright/test": "catalog:",
     "@unocss/eslint-config": "catalog:build",
     "@unocss/nuxt": "catalog:build",
     "@vueuse/core": "catalog:frontend",

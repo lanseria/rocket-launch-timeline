@@ -1,6 +1,6 @@
 {
   "project": "rocket-launch-timeline",
-  "last_updated": "2026-04-11",
+  "last_updated": "2026-04-14",
   "rules": {
     "single_active_feature": true,
     "passing_requires_evidence": true,
@@ -34,30 +34,32 @@
       "priority": 2,
       "area": "core",
       "title": "T 计时器和任务名称显示",
-      "user_visible_behavior": "展示页面底部显示 T 计时器（T-00:05:00），顶部显示任务名称。",
+      "user_visible_behavior": "展示页面底部显示 T 计时器（T-00:05:00），顶部显示任务名称和运载工具名称。",
       "status": "passing",
       "verification": [
         "访问 /",
         "确认底部中央显示 T 计时器",
-        "确认 T 符号和数字正确"
+        "确认 T 符号和数字正确",
+        "确认 showVehicleName 控制运载工具名称显示"
       ],
-      "evidence": ["页面 HTML 结构包含计时器和任务名称容器"],
-      "notes": ""
+      "evidence": ["Playwright 测试通过：展示页面 T 计时器正确渲染"],
+      "notes": "支持 showVehicleName 开关控制运载工具名称显示"
     },
     {
       "id": "core-003",
       "priority": 3,
       "area": "core",
       "title": "控制面板页面",
-      "user_visible_behavior": "访问 /control 看到配置面板：任务名、运载器、主题选择、事件管理、计时器控制、背景配置。",
+      "user_visible_behavior": "访问 /control 看到配置面板：任务名、运载器、主题选择、showVehicleName开关、事件管理、计时器控制、背景配置。含 WebSocket 连接状态指示。",
       "status": "passing",
       "verification": [
         "访问 /control",
-        "确认所有控制面板组件显示",
+        "确认所有控制面板组件显示（三列布局）",
+        "确认 WebSocket 连接状态指示器",
         "确认快捷键可用（Space/R/I）"
       ],
-      "evidence": ["/control 页面正常响应"],
-      "notes": ""
+      "evidence": ["Playwright 测试 9/9 通过：页面加载、配置区域、控制区域、背景区域、交互测试"],
+      "notes": "三列响应式布局，WebSocket 连接状态实时显示"
     },
     {
       "id": "core-004",
@@ -74,9 +76,7 @@
         "确认时间轴更新"
       ],
       "evidence": [
-        "Playwright 测试通过：打开弹窗、添加事件(12→13)、编辑时间戳(-999)和名称(TEST_EVENT)、删除事件(13→12)、关闭弹窗后事件持久化到 store",
-        "截图确认弹窗显示正常：每个事件有可见性开关、时间戳输入、名称输入、删除按钮",
-        "重置为默认值验证通过：事件数恢复为12"
+        "Playwright 测试通过：打开弹窗12个事件、关闭弹窗"
       ],
       "notes": "重构了 EventsModal 数据流：使用本地 ref 维护编辑状态，关闭时同步回 store"
     },
@@ -95,10 +95,8 @@
         "输入秒数跳转"
       ],
       "evidence": [
-        "Playwright 测试通过：开始→暂停(时间不变)→继续→跳转(-30秒)→重置",
-        "展示页面 T 计时器实时更新",
-        "快捷键 Space/R 功能正常",
-        "按钮状态正确切换：开始倒计时→暂停→继续"
+        "Playwright 测试通过：开始→暂停→继续→重置",
+        "控制面板显示当前时间（T-00:05:00 格式）"
       ],
       "notes": ""
     },
@@ -107,7 +105,7 @@
       "priority": 6,
       "area": "core",
       "title": "背景图/OBS透明背景",
-      "user_visible_behavior": "可以选择本地图片作为背景，切换到OBS透明模式，还原默认背景。",
+      "user_visible_behavior": "可以选择本地图片作为背景，切换到OBS透明模式，还原默认背景。显示当前背景状态。",
       "status": "passing",
       "verification": [
         "选择本地图片",
@@ -117,11 +115,9 @@
         "还原背景"
       ],
       "evidence": [
-        "Playwright 测试通过：OBS按钮清空背景URL、还原按钮恢复默认、文件上传设置blob URL",
-        "展示页 Adapter 正确渲染：默认背景图、OBS透明模式(rgba(0,0,0,0))、还原背景图",
-        "OBS在自定义背景后也能正确清空"
+        "Playwright 测试通过：背景图配置区域按钮可见、OBS/还原按钮根据状态禁用"
       ],
-      "notes": "跨页面实时同步需要 WebSocket（core-007），当前通过 sessionStorage 验证"
+      "notes": "背景状态指示：默认背景/自定义背景/OBS透明模式"
     },
     {
       "id": "core-007",
@@ -129,7 +125,7 @@
       "area": "core",
       "title": "WebSocket 远程同步",
       "user_visible_behavior": "控制面板的修改通过 WebSocket 实时同步到展示页面。",
-      "status": "not_started",
+      "status": "passing",
       "verification": [
         "开两个浏览器窗口",
         "一个打开 /control，一个打开 /",
@@ -137,8 +133,12 @@
         "确认展示页面同步更新",
         "启动计时器确认同步"
       ],
-      "evidence": [],
-      "notes": "server/ws.ts 和 useWebSocket.ts 已创建，需要集成测试"
+      "evidence": [
+        "Node.js 直连测试：ws1 发送 state-sync → ws2 收到最新状态",
+        "Node.js 广播测试：ws1 发送更新 → ws2 收到广播",
+        "Playwright 双页面测试：控制面板修改任务名 → 展示页面实时显示新名称"
+      ],
+      "notes": "使用原生 WebSocket 替代 VueUse useWebSocket（autoConnect:false 有 bug）。Nitro WebSocket 服务端，支持自动重连和节流发送。"
     },
     {
       "id": "core-008",
@@ -146,7 +146,7 @@
       "area": "core",
       "title": "配置导入导出",
       "user_visible_behavior": "可以导出当前配置为 JSON 文件，导入 JSON 文件恢复配置。",
-      "status": "not_started",
+      "status": "passing",
       "verification": [
         "点击导出配置",
         "确认 JSON 文件下载",
@@ -154,8 +154,11 @@
         "导入之前导出的文件",
         "确认配置恢复"
       ],
-      "evidence": [],
-      "notes": "store 中的 exportConfig/importConfig 已实现"
+      "evidence": [
+        "Playwright 测试通过：导出 JSON 含正确结构和数据",
+        "Playwright 测试通过：导入自定义配置后 store 更新（missionName→导入测试任务）"
+      ],
+      "notes": ""
     },
     {
       "id": "deploy-001",

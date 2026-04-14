@@ -28,19 +28,19 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
   ],
   devServer: {
-    port: 3000,
+    port: 30005,
   },
   experimental: {
     payloadExtraction: false,
     renderJsonPayloads: true,
     typedPages: true,
   },
+  compatibilityDate: '2025-11-01',
   nitro: {
     experimental: {
       websocket: true,
     },
   },
-  compatibilityDate: '2025-11-01',
   vite: {
     optimizeDeps: {
       include: [

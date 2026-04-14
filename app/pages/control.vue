@@ -19,6 +19,7 @@ onMounted(() => {
       () => timelineStore.vehicleName,
       () => timelineStore.backgroundImageUrl,
       () => timelineStore.activeThemeId,
+      () => timelineStore.showVehicleName,
       () => timelineStore.timestamps,
       () => timelineStore.nodeNames,
       () => timelineStore.nodeVisibilities,
@@ -51,10 +52,22 @@ onUnmounted(() => {
       <Title>Rocket Launch Timeline - 控制面板</Title>
     </Head>
 
-    <div class="max-w-2xl mx-auto space-y-4">
-      <h1 class="text-2xl font-bold text-center mb-6">
-        控制面板
-      </h1>
+    <div class="gap-4 mx-auto max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <!-- 标题栏 -->
+      <div class="col-span-full flex items-center justify-between mb-2">
+        <h1 class="text-2xl font-bold">
+          控制面板
+        </h1>
+        <div class="flex items-center gap-2 text-sm">
+          <span
+            class="inline-block h-2.5 w-2.5 rounded-full"
+            :class="ws.isConnected.value ? 'bg-green-500' : 'bg-red-500'"
+          />
+          <span class="text-gray-400">
+            {{ ws.isConnected.value ? '已连接' : '未连接' }}
+          </span>
+        </div>
+      </div>
 
       <ControlPanelMainConfig @open-events-modal="showEventsModal = true" />
       <ControlPanelControls />
