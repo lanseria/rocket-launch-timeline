@@ -58,10 +58,7 @@ onUnmounted(() => {
           </div>
         </div>
         <div class="text-16px text-stone-100/70 font-500 uppercase">
-          {{ missionName }}
-        </div>
-        <div v-if="showVehicleName" class="text-14px text-stone-100/50 font-400 mt-0.5">
-          {{ vehicleName }}
+          {{ missionName }}<template v-if="showVehicleName"> · {{ vehicleName }}</template>
         </div>
       </div>
 
