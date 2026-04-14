@@ -7,6 +7,13 @@ interface WSMessage {
 
 let latestState: StateSnapshot | null = null
 
+function broadcast(peer: { publish: (topic: string, data: string) => void }, data: WSMessage) {
+  // crossws v0.3.5 的 publish 有 bug: isBinary 检查原始 data 而非转换后的 dataBuff
+  // 导致对象被当作二进制发送，浏览器端 JSON.parse 失败
+  // 修复：手动 stringify
+  peer.publish('timeline', JSON.stringify(data))
+}
+
 export default defineWebSocketHandler({
   open(peer) {
     peer.subscribe('timeline')
@@ -22,14 +29,14 @@ export default defineWebSocketHandler({
 
       if (data.type === 'state-sync') {
         latestState = data.payload as StateSnapshot
-        peer.publish('timeline', data)
+        broadcast(peer, data)
       }
       else if (data.type === 'clock-sync') {
-        peer.publish('timeline', data)
+        broadcast(peer, data)
       }
       else if (data.type === 'request-state') {
         if (latestState) {
-          peer.publish('timeline', { type: 'state-sync', payload: latestState } satisfies WSMessage)
+          broadcast(peer, { type: 'state-sync', payload: latestState } satisfies WSMessage)
         }
       }
     }

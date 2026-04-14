@@ -7,12 +7,12 @@ export default {
   workers: 1,
   reporter: 'line',
   use: {
-    baseURL: 'http://localhost:30005',
+    baseURL: 'http://localhost:3005',
     trace: 'on-first-retry',
   },
   webServer: {
     command: 'pnpm dev',
-    port: 30005,
+    port: 3005,
     reuseExistingServer: true,
     timeout: 60000,
   },

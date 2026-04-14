@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const BASE = 'http://localhost:30005'
+const BASE = 'http://localhost:3005'
 
 test.describe('WebSocket 实时同步', () => {
   test('控制面板修改同步到展示页面', async ({ browser }) => {

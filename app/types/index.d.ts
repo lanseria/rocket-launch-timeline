@@ -56,6 +56,8 @@ interface StateSnapshot {
   nodeVisibilities: boolean[]
   backgroundImageUrl: string
   activeThemeId: string
+  showVehicleName: boolean
+  showConnectionIndicator: boolean
 }
 
 interface ClockSyncPayload {

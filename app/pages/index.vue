@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { getTheme } from '~/themes'
 
 const timelineStore = useTimelineStore()
-const { missionName, vehicleName, showVehicleName, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId } = storeToRefs(timelineStore)
+const { missionName, vehicleName, showVehicleName, showConnectionIndicator, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId } = storeToRefs(timelineStore)
 
 const activeThemeComponent = computed(() => {
   const theme = getTheme(activeThemeId.value)
@@ -38,17 +38,16 @@ onUnmounted(() => {
         <Title>Rocket Launch Timeline</Title>
       </Head>
 
-      <!-- 任务名称 -->
-      <div class="mx-auto my-4 text-center relative z-10">
-        <p class="text-40px font-500 font-sans text-white">
-          {{ missionName }}
-        </p>
-        <p v-if="showVehicleName" class="text-lg text-gray-300 font-sans mt-1">
-          {{ vehicleName }}
-        </p>
+      <!-- 连接状态指示器 -->
+      <div v-if="showConnectionIndicator" class="top-4 right-4 fixed z-50 flex items-center gap-2 text-sm text-white/60">
+        <span
+          class="inline-block h-2 w-2 rounded-full"
+          :class="ws.isConnected.value ? 'bg-green-500' : 'bg-red-500'"
+        />
+        <span>{{ ws.isConnected.value ? '已连接' : '未连接' }}</span>
       </div>
 
-      <!-- T 计时器 -->
+      <!-- T 计时器 + 任务名称 + 运载工具 -->
       <div class="font-400 font-sans mx-auto text-center max-w-md bottom-16px left-1/2 fixed z-50 -translate-x-1/2">
         <div class="leading-tight flex gap-1 items-center tabular-nums">
           <div class="text-34px text-stone-100/70 font-500 flex gap-1 w-42px items-center">
@@ -57,6 +56,12 @@ onUnmounted(() => {
           <div class="text-44px text-white font-400">
             {{ timerClock.timeString }}
           </div>
+        </div>
+        <div class="text-16px text-stone-100/70 font-500 uppercase">
+          {{ missionName }}
+        </div>
+        <div v-if="showVehicleName" class="text-14px text-stone-100/50 font-400 mt-0.5">
+          {{ vehicleName }}
         </div>
       </div>
 

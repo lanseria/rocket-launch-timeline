@@ -20,6 +20,7 @@ onMounted(() => {
       () => timelineStore.backgroundImageUrl,
       () => timelineStore.activeThemeId,
       () => timelineStore.showVehicleName,
+      () => timelineStore.showConnectionIndicator,
       () => timelineStore.timestamps,
       () => timelineStore.nodeNames,
       () => timelineStore.nodeVisibilities,

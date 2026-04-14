@@ -2,8 +2,7 @@
 
 ## 当前已验证状态
 
-- 仓库根目录：/Users/zhangchao/Documents/Code/github/rocket-launch-timeline
-- 标准启动路径：`pnpm dev` → http://localhost:3000
+- 标准启动路径：`pnpm dev` → http://localhost:3005
 - 标准验证路径：访问 `/` 看到时间轴，访问 `/control` 看到控制面板
 - 当前最高优先级未完成功能：deploy-001（Docker Compose 部署）
 - 当前 blocker：无
@@ -30,8 +29,8 @@
 - 运行过的验证：
   - `pnpm install` 成功
   - `pnpm dev` 启动成功（Nuxt 4.4.2 + Nitro 2.13.3 + Vite 7.3.2）
-  - `curl http://localhost:30005/` 返回正常 HTML
-  - `curl http://localhost:30005/control` 返回正常 HTML
+  - `curl http://localhost:3005/` 返回正常 HTML
+  - `curl http://localhost:3005/control` 返回正常 HTML
 - 已记录证据：两个页面均正常响应，WebSocket 端点已注册
 - 提交记录：无（尚未提交）
 - 更新过的文件或工件：所有项目文件

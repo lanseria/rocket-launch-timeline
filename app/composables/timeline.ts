@@ -26,6 +26,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   const backgroundImageUrl = useSessionStorage<string>('rlt_persisted_background_image_url', defaultConfigEN.backgroundImageUrl)
   const activeThemeId = useLocalStorage<string>('rlt_active_theme_id', 'spacex-v4')
   const showVehicleName = useLocalStorage<boolean>('rlt_show_vehicle_name', false)
+  const showConnectionIndicator = useLocalStorage<boolean>('rlt_show_connection_indicator', true)
 
   const timestamps = useLocalStorage<number[]>('rlt_timestamps_seconds', initialEventTimes)
   const nodeNames = useLocalStorage<string[]>('rlt_nodenames', initialEventNames)
@@ -265,6 +266,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       vehicleName: vehicleName.value,
       activeThemeId: activeThemeId.value,
       showVehicleName: showVehicleName.value,
+      showConnectionIndicator: showConnectionIndicator.value,
       timestamps: timestamps.value,
       nodeNames: nodeNames.value,
       nodeVisibilities: nodeVisibilities.value,
@@ -295,6 +297,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       vehicleName.value = parsedConfig.vehicleName ?? vehicleName.value
       activeThemeId.value = parsedConfig.activeThemeId ?? activeThemeId.value
       showVehicleName.value = parsedConfig.showVehicleName ?? showVehicleName.value
+      showConnectionIndicator.value = parsedConfig.showConnectionIndicator ?? showConnectionIndicator.value
       timestamps.value = parsedConfig.timestamps ?? timestamps.value
       nodeNames.value = parsedConfig.nodeNames ?? nodeNames.value
       nodeVisibilities.value = parsedConfig.nodeVisibilities ?? timestamps.value.map(() => true)
@@ -320,6 +323,8 @@ export const useTimelineStore = defineStore('timeline', () => {
       activeThemeId.value = state.activeThemeId
     if (state.showVehicleName !== undefined)
       showVehicleName.value = state.showVehicleName
+    if (state.showConnectionIndicator !== undefined)
+      showConnectionIndicator.value = state.showConnectionIndicator
 
     if (state.backgroundImageUrl !== undefined && backgroundImageUrl.value !== state.backgroundImageUrl)
       backgroundImageUrl.value = state.backgroundImageUrl
@@ -377,6 +382,8 @@ export const useTimelineStore = defineStore('timeline', () => {
       nodeVisibilities: nodeVisibilities.value,
       backgroundImageUrl: backgroundImageUrl.value,
       activeThemeId: activeThemeId.value,
+      showVehicleName: showVehicleName.value,
+      showConnectionIndicator: showConnectionIndicator.value,
     }
   }
 
@@ -398,6 +405,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     backgroundImageUrl,
     activeThemeId,
     showVehicleName,
+    showConnectionIndicator,
     timestamps,
     nodeNames,
     nodeVisibilities,

@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@unocss/nuxt',
     '@pinia/nuxt',
+    '@nuxtjs/color-mode',
     '@nuxt/eslint',
   ],
   ssr: false,
@@ -27,8 +28,14 @@ export default defineNuxtConfig({
   css: [
     '~/assets/css/main.css',
   ],
+
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
+  },
+
   devServer: {
-    port: 30005,
+    port: 3005,
   },
   experimental: {
     payloadExtraction: false,

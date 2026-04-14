@@ -70,6 +70,13 @@ watch(files, (selectedFiles) => {
         <div class="rounded-full bg-gray-600 h-6 w-11 peer-focus:outline-none after:border after:border-gray-300 after:rounded-full after:bg-white peer-checked:bg-blue-600 after:h-5 after:w-5 after:content-[''] after:transition-all after:start-[2px] after:top-[2px] after:absolute peer-checked:after:translate-x-full" />
       </label>
     </div>
+    <div class="flex items-center justify-between">
+      <label for="showConnectionIndicatorSwitch" class="text-sm text-gray-300 font-medium">展示页显示连接状态</label>
+      <label for="showConnectionIndicatorSwitch" class="inline-flex cursor-pointer items-center relative">
+        <input id="showConnectionIndicatorSwitch" v-model="timelineStore.showConnectionIndicator" type="checkbox" class="peer sr-only">
+        <div class="rounded-full bg-gray-600 h-6 w-11 peer-focus:outline-none after:border after:border-gray-300 after:rounded-full after:bg-white peer-checked:bg-blue-600 after:h-5 after:w-5 after:content-[''] after:transition-all after:start-[2px] after:top-[2px] after:absolute peer-checked:after:translate-x-full" />
+      </label>
+    </div>
 
     <div class="my-1 border-t border-gray-600" />
     <div class="space-y-3">

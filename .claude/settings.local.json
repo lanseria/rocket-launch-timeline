@@ -12,7 +12,7 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" -H \"Upgrade: websocket\" -H \"Connection: Upgrade\" http://localhost:3001/_ws)"
     ],
     "additionalDirectories": [
-      "C:\\Users\\zhang\\Documents\\Code\\spacex-launch-timeline"
+      "/Users/zhangchao/Documents/Code/Supeset/spacex-launch-timeline"
     ]
   }
 }

@@ -13,8 +13,8 @@ echo "==> 同步依赖"
 "${INSTALL_CMD[@]}"
 
 echo "==> 启动命令: pnpm dev"
-echo "==> 展示页面: http://localhost:3000/"
-echo "==> 控制面板: http://localhost:3000/control"
+echo "==> 展示页面: http://localhost:3005/"
+echo "==> 控制面板: http://localhost:3005/control"
 
 if [ "${RUN_START_COMMAND:-0}" = "1" ]; then
   echo "==> 启动应用"

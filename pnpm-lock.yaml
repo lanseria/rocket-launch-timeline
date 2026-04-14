@@ -12,6 +12,9 @@ catalogs:
     '@nuxt/eslint':
       specifier: ^1.15.2
       version: 1.15.2
+    '@nuxtjs/color-mode':
+      specifier: ^4.0.0
+      version: 4.0.0
     '@pinia/nuxt':
       specifier: ^0.11.3
       version: 0.11.3
@@ -75,6 +78,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@nuxtjs/color-mode':
+        specifier: catalog:build
+        version: 4.0.0(magicast@0.5.2)
     devDependencies:
       '@antfu/eslint-config':
         specifier: catalog:dev
@@ -811,6 +818,9 @@ packages:
         optional: true
       rollup-plugin-visualizer:
         optional: true
+
+  '@nuxtjs/color-mode@4.0.0':
+    resolution: {integrity: sha512-xyaVR/TPLdMuRa2VOgH6b75jvmFEsn9QKL6ISldaAw38ooFJfWY1ts2F3ye43wcT/goCbcuvPuskF2f8yUZhlw==}
 
   '@ota-meshi/ast-token-store@0.3.0':
     resolution: {integrity: sha512-XRO0zi2NIUKq2lUk3T1ecFSld1fMWRKE6naRFGkgkdeosx7IslyUKNv5Dcb5PJTja9tHJoFu0v/7yEpAkrkrTg==}
@@ -6087,6 +6097,16 @@ snapshots:
       - vti
       - vue-tsc
       - yaml
+
+  '@nuxtjs/color-mode@4.0.0(magicast@0.5.2)':
+    dependencies:
+      '@nuxt/kit': 4.4.2(magicast@0.5.2)
+      exsolve: 1.0.8
+      pathe: 2.0.3
+      pkg-types: 2.3.0
+      semver: 7.7.4
+    transitivePeerDependencies:
+      - magicast
 
   '@ota-meshi/ast-token-store@0.3.0': {}
 

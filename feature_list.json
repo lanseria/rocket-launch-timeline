@@ -170,7 +170,7 @@
       "verification": [
         "运行 docker compose up --build",
         "确认容器启动成功",
-        "访问 http://localhost:3000",
+        "访问 http://localhost:3005",
         "确认页面正常显示"
       ],
       "evidence": [],
