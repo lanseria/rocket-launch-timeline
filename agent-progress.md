@@ -66,7 +66,7 @@
   - app/components/modal/EventsModal.vue（重构数据流）
   - app/pages/control.vue（简化事件处理）
   - feature_list.json（core-004 状态→passing）
-  - claude-progress.md（进度更新）
+  - agent-progress.md（进度更新）
 - 提交记录：待提交
 - 下一步最佳动作：deploy-001 Docker Compose 部署
 
@@ -109,7 +109,7 @@
   - app/components/ControlPanel/BackgroundConfig.vue（状态指示、按钮禁用）
   - app/composables/useWebSocket.ts（原生 WebSocket 重写）
   - feature_list.json（core-007、core-008 → passing）
-  - claude-progress.md（进度更新）
+  - agent-progress.md（进度更新）
   - 新增：playwright.config.ts、tests/control-panel.spec.ts、tests/websocket-sync.spec.ts、tests/import-export.spec.ts
 - 提交记录：待提交
 - 下一步最佳动作：deploy-001 Docker Compose 部署

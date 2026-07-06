@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 你正在一个为长时实现工作设计的仓库中工作。优先保证可靠完成、跨会话连续性和显式验证，而不是表面上的速度。
 
@@ -7,7 +7,7 @@
 每轮会话开始时：
 
 1. 运行 `pwd`，确认当前在正确的仓库根目录
-2. 读取 `claude-progress.md`
+2. 读取 `agent-progress.md`
 3. 读取 `feature_list.json`
 4. 用 `git log --oneline -5` 查看最近提交
 5. 运行 `./init.sh`
@@ -26,7 +26,7 @@
 ## 必需文件
 
 - `feature_list.json`
-- `claude-progress.md`
+- `agent-progress.md`
 - `init.sh`
 - 需要简短交接时使用 `session-handoff.md`
 
