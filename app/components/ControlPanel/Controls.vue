@@ -157,6 +157,25 @@ watch(r!, (pressed) => {
       </small>
     </div>
 
+    <!-- 预览跨度（动画前事件铺开范围） -->
+    <div>
+      <h3 class="text-sm font-semibold text-gray-300 mb-2">
+        预览跨度 (秒)
+      </h3>
+      <input
+        v-model.number="timelineStore.overviewSpanSeconds"
+        type="number"
+        min="20"
+        step="20"
+        placeholder="例如: 300"
+        class="input-field w-full"
+        aria-label="预览跨度秒数"
+      >
+      <small class="text-xs text-gray-400 mt-1 block">
+        动画前事件等距铺开的总跨度，值越大事件越稀疏（默认 1200）
+      </small>
+    </div>
+
     <div class="border-t border-gray-600" />
 
     <!-- 快捷键提示 -->

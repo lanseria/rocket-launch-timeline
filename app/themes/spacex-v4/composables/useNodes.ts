@@ -9,16 +9,14 @@ import {
 } from '../constants'
 import { interpolateColor } from '../utils/color'
 import { easeInOutSine } from '../utils/easing'
-import { createTimeMapFunction } from '../utils/timeMapping'
+import { computeTimelineMapping } from '../utils/timeMapping'
 
 interface NodeProps {
   timestamps: number[]
   nodeNames: string[]
   missionDuration: number
   currentTimeOffset?: number
-  averageDensityFactor?: number
-  pastNodeDensityFactor?: number
-  futureNodeDensityFactor?: number
+  overviewSpanSeconds?: number
 }
 
 interface Geometry {
@@ -51,12 +49,11 @@ export function useTimelineNodesV4(
     const transitionStartOffset = colorTransitionDuration / 2
     const transitionEndOffset = -colorTransitionDuration / 2
 
-    const mapTime = createTimeMapFunction(
-      currentTimelineTime,
-      props.averageDensityFactor?.value ?? 1.6,
-      props.pastNodeDensityFactor?.value ?? 2.4,
-      props.futureNodeDensityFactor?.value ?? 2.4,
-    )
+    const { relativeTimes } = computeTimelineMapping({
+      currentTime: currentTimelineTime,
+      timestamps: props.timestamps.value,
+      overviewSpanSeconds: props.overviewSpanSeconds?.value,
+    })
 
     return props.timestamps.value
       .map((timestamp, i) => ({
@@ -67,9 +64,7 @@ export function useTimelineNodesV4(
       .map((event) => {
         const { timestamp, name, originalIndex } = event
 
-        const mappedTimestamp = mapTime(timestamp)
-        const mappedCurrentTime = mapTime(currentTimelineTime)
-        const virtualTimeRelativeToNow = mappedTimestamp - mappedCurrentTime
+        const virtualTimeRelativeToNow = relativeTimes[originalIndex] ?? 0
 
         const halfReferencePathLength = effectiveSvgWidth.value / 2
         const halfMissionDuration = props.missionDuration.value / 2

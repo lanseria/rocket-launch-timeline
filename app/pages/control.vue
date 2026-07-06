@@ -21,6 +21,7 @@ onMounted(() => {
       () => timelineStore.activeThemeId,
       () => timelineStore.showVehicleName,
       () => timelineStore.showConnectionIndicator,
+      () => timelineStore.overviewSpanSeconds,
       () => timelineStore.timestamps,
       () => timelineStore.nodeNames,
       () => timelineStore.nodeVisibilities,

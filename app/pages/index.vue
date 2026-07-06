@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { getTheme } from '~/themes'
 
 const timelineStore = useTimelineStore()
-const { missionName, vehicleName, showVehicleName, showConnectionIndicator, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId } = storeToRefs(timelineStore)
+const { missionName, vehicleName, showVehicleName, showConnectionIndicator, timerClock, missionTimeSeconds, currentTimeOffset, visibleEvents, activeThemeId, overviewSpanSeconds } = storeToRefs(timelineStore)
 
 const activeThemeComponent = computed(() => {
   const theme = getTheme(activeThemeId.value)
@@ -72,6 +72,7 @@ onUnmounted(() => {
         :node-names="visibleEvents.visibleNodeNames"
         :mission-duration="missionTimeSeconds"
         :current-time-offset="currentTimeOffset"
+        :overview-span-seconds="overviewSpanSeconds"
       />
 
       <GradientBar class="bottom-0 left-0 absolute z-1" />

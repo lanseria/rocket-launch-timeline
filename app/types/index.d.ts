@@ -58,6 +58,7 @@ interface StateSnapshot {
   activeThemeId: string
   showVehicleName: boolean
   showConnectionIndicator: boolean
+  overviewSpanSeconds: number
 }
 
 interface ClockSyncPayload {

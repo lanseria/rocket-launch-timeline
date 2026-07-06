@@ -18,8 +18,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   const initialEventNames = defaultConfigEN.events.map(event => event.name)
   const initialEventVisibilities = defaultConfigEN.events.map(event => event.show)
 
-  const firstNegativeEventTime = initialEventTimes.find(t => t < 0)
-  const defaultCountdownStartSeconds = firstNegativeEventTime ? Math.abs(firstNegativeEventTime) : 60
+  const defaultCountdownStartSeconds = 300
 
   const missionName = useLocalStorage<string>('rlt_mission_name', defaultConfigEN.missionName)
   const vehicleName = useLocalStorage<string>('rlt_vehicle_name', defaultConfigEN.vehicle)
@@ -27,6 +26,7 @@ export const useTimelineStore = defineStore('timeline', () => {
   const activeThemeId = useLocalStorage<string>('rlt_active_theme_id', 'spacex-v4')
   const showVehicleName = useLocalStorage<boolean>('rlt_show_vehicle_name', false)
   const showConnectionIndicator = useLocalStorage<boolean>('rlt_show_connection_indicator', true)
+  const overviewSpanSeconds = useLocalStorage<number>('rlt_overview_span_seconds', 1200)
 
   const timestamps = useLocalStorage<number[]>('rlt_timestamps_seconds', initialEventTimes)
   const nodeNames = useLocalStorage<string[]>('rlt_nodenames', initialEventNames)
@@ -267,6 +267,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       activeThemeId: activeThemeId.value,
       showVehicleName: showVehicleName.value,
       showConnectionIndicator: showConnectionIndicator.value,
+      overviewSpanSeconds: overviewSpanSeconds.value,
       timestamps: timestamps.value,
       nodeNames: nodeNames.value,
       nodeVisibilities: nodeVisibilities.value,
@@ -298,6 +299,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       activeThemeId.value = parsedConfig.activeThemeId ?? activeThemeId.value
       showVehicleName.value = parsedConfig.showVehicleName ?? showVehicleName.value
       showConnectionIndicator.value = parsedConfig.showConnectionIndicator ?? showConnectionIndicator.value
+      overviewSpanSeconds.value = parsedConfig.overviewSpanSeconds ?? overviewSpanSeconds.value
       timestamps.value = parsedConfig.timestamps ?? timestamps.value
       nodeNames.value = parsedConfig.nodeNames ?? nodeNames.value
       nodeVisibilities.value = parsedConfig.nodeVisibilities ?? timestamps.value.map(() => true)
@@ -325,6 +327,8 @@ export const useTimelineStore = defineStore('timeline', () => {
       showVehicleName.value = state.showVehicleName
     if (state.showConnectionIndicator !== undefined)
       showConnectionIndicator.value = state.showConnectionIndicator
+    if (state.overviewSpanSeconds !== undefined)
+      overviewSpanSeconds.value = state.overviewSpanSeconds
 
     if (state.backgroundImageUrl !== undefined && backgroundImageUrl.value !== state.backgroundImageUrl)
       backgroundImageUrl.value = state.backgroundImageUrl
@@ -384,6 +388,7 @@ export const useTimelineStore = defineStore('timeline', () => {
       activeThemeId: activeThemeId.value,
       showVehicleName: showVehicleName.value,
       showConnectionIndicator: showConnectionIndicator.value,
+      overviewSpanSeconds: overviewSpanSeconds.value,
     }
   }
 
@@ -406,6 +411,7 @@ export const useTimelineStore = defineStore('timeline', () => {
     activeThemeId,
     showVehicleName,
     showConnectionIndicator,
+    overviewSpanSeconds,
     timestamps,
     nodeNames,
     nodeVisibilities,

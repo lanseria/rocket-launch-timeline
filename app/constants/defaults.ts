@@ -5,7 +5,7 @@ export const defaultConfigEN = {
   vehicle: 'Falcon 9 Block 5',
   backgroundImageUrl: '/assets/images/falcon9_16_9.jpg',
   events: [
-    { time: -300, name: 'ENGINE CHILL', show: true },
+    { time: -280, name: 'ENGINE CHILL', show: true },
     { time: -45, name: 'STARTUP', show: true },
     { time: -1, name: 'IGNITION', show: false },
     { time: 0, name: 'LIFTOFF', show: true },
@@ -25,7 +25,7 @@ export const defaultConfigZH = {
   vehicle: '猎鹰9号 Block 5',
   backgroundImageUrl: '/assets/images/falcon9_16_9.jpg',
   events: [
-    { time: -300, name: '引擎预冷', show: true },
+    { time: -280, name: '引擎预冷', show: true },
     { time: -45, name: '引擎启动', show: true },
     { time: -1, name: '点火', show: false },
     { time: 0, name: '起飞', show: true },

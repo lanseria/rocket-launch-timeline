@@ -11,9 +11,7 @@ const props = defineProps<{
   currentTimeOffset?: number
   svgWidth?: number
   svgHeight?: number
-  averageDensityFactor?: number
-  pastNodeDensityFactor?: number
-  futureNodeDensityFactor?: number
+  overviewSpanSeconds?: number
 }>()
 
 const maskContentGroupEl = useTemplateRef<SVGGElement>('maskContentGroupEl')
