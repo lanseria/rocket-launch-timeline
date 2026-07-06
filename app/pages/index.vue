@@ -49,8 +49,9 @@ onUnmounted(() => {
 
       <!-- T 计时器 + 任务名称 + 运载工具 -->
       <div class="font-400 font-sans mx-auto text-center max-w-md bottom-16px left-1/2 fixed z-50 -translate-x-1/2">
-        <div class="leading-tight flex gap-1 items-center tabular-nums">
-          <div class="text-34px text-stone-100/70 font-500 flex gap-1 w-42px items-center">
+        <div class="leading-tight relative inline-block tabular-nums">
+          <!-- T+/- 相对于时间绝对定位，不挤占时间居中空间 -->
+          <div class="text-34px text-stone-100/70 font-500 absolute right-full top-1/2 mr-2 flex -translate-y-1/2 gap-1 items-center whitespace-nowrap">
             <div>T</div><div>{{ timerClock.isPositive ? '+' : '-' }}</div>
           </div>
           <div class="text-44px text-white font-400">
