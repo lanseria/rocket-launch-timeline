@@ -1,33 +1,43 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
 catalog:
-  '@playwright/test': ^1.61.1
+  '@playwright/test': ^1.62.0
 catalogMode: prefer
 
 catalogs:
   build:
-    '@nuxt/devtools': ^3.2.4
+    '@nuxt/devtools': ^3.3.1
     '@nuxt/eslint': ^1.16.0
     '@nuxtjs/color-mode': ^4.0.1
-    '@pinia/nuxt': ^0.11.3
-    '@unocss/eslint-config': ^66.7.4
-    '@unocss/nuxt': ^66.7.4
-    '@vueuse/nuxt': ^14.3.0
-    nuxt: ^4.4.8
-    unocss: ^66.7.4
+    '@pinia/nuxt': ^1.0.1
+    '@unocss/eslint-config': ^66.7.5
+    '@unocss/nuxt': ^66.7.5
+    '@vueuse/nuxt': ^14.4.0
+    nuxt: ^4.5.1
+    unocss: ^66.7.5
   dev:
-    '@antfu/eslint-config': ^8.3.0
-    eslint: ^10.6.0
+    '@antfu/eslint-config': ^9.2.0
+    eslint: ^10.8.0
     eslint-plugin-format: ^2.0.1
     typescript: ^6.0.3
-    vue-tsc: ^3.3.6
+    vue-tsc: ^3.3.8
   frontend:
-    '@vueuse/core': ^14.3.0
-    es-toolkit: ^1.49.0
-    pinia: ^3.0.4
-    vue: ^3.5.39
+    '@vueuse/core': ^14.4.0
+    es-toolkit: ^1.50.0
+    pinia: ^4.0.2
+    vue: ^3.5.40
   icons:
     '@iconify-json/carbon': ^1.2.24
 
 cleanupUnusedCatalogs: true
+
+minimumReleaseAgeExclude:
+  - '@vueuse/core@14.4.0'
+  - '@vueuse/metadata@14.4.0'
+  - '@vueuse/nuxt@14.4.0'
+  - '@vueuse/shared@14.4.0'
 
 onlyBuiltDependencies:
   - '@parcel/watcher'
@@ -36,3 +46,6 @@ onlyBuiltDependencies:
 shellEmulator: true
 
 trustPolicy: no-downgrade
+
+trustPolicyExclude:
+  - semver@6.3.1
